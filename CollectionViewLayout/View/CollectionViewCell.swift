@@ -17,7 +17,8 @@ class CollectionViewCell: UICollectionViewCell {
         label.clipsToBounds = true //cellからはみ出さないようにする
          return label
      }()
-     override init(frame: CGRect) { //初期化した時に呼ばれる所
+     
+        override init(frame: CGRect) { //初期化した時に呼ばれる所
          super.init(frame: frame)
          addSubview(label)//addSubview
          label.frame.size = self.frame.size

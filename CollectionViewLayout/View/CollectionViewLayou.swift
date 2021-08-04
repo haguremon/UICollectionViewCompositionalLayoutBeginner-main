@@ -8,46 +8,57 @@
 import Foundation
 import UIKit
 class CollectionViewLayout {
+    static let headerId = "headerId"
     
     func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment -> NSCollectionLayoutSection? in
         if sectionIndex == 0 {
+            //セクション０
+            
             //3グループの中にあるアイテムを作成
             let item = NSCollectionLayoutItem(layoutSize: .init(
-                                                widthDimension: .fractionalWidth(1), //100%
+                                                widthDimension: .fractionalWidth(1), //100%グループの幅
                                                 heightDimension: .fractionalHeight(1)))//100% 200
             //4　ここでセルの間をあける　三つの高さ200のセルが表示されるため
-            item.contentInsets.leading = 3
-            item.contentInsets.trailing = 3 //右からの間
-            item.contentInsets.bottom = 19 //itemのボトムの間
+            item.contentInsets = .init(top: 10, leading: 3, bottom: 0, trailing: 3)
             //2 グループを作成　グループのサイズを決める
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
-                                                            widthDimension: .fractionalWidth(1),//100%
+                                                            widthDimension: .fractionalWidth(1),//100%fractional（分数）
                                                             heightDimension: .absolute(200)), //200の高さのグループ
                                                            subitems: [item])
             //1　セクションを決める
             let section = NSCollectionLayoutSection(group: group)
-            //5 これだけでも分けることができるけどスペースがないとわかりずらい
-            //section.orthogonalScrollingBehavior = .paging
+            //5 これでよかにScrollingする
+            section.orthogonalScrollingBehavior = .paging
             
             return section
+        
         }
             else {
-                //itemのサイズ
-                let item = NSCollectionLayoutItem(layoutSize: .init(
-                                                    widthDimension: .fractionalWidth(0.25), //アイテムの幅を25％
-                                                    heightDimension: .absolute(150)))//100%
-                //ここでセルの間をあける
-                //item.contentInsets.leading = 3
-                item.contentInsets.trailing = 3 //右からの間
-                item.contentInsets.bottom = 15 //itemのボトムの間
-                //グループを作成
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [item])//koko注意horizontal注意とかの引数
+                //セクション1
                 
+                //3グループの中にあるアイテムを作成
+                let item = NSCollectionLayoutItem(layoutSize: .init(
+                                                    widthDimension: .fractionalWidth(0.25), //アイテムの幅25％グループの幅の25％
+                                                    heightDimension: .absolute(150)))//アイテムの絶対値の高さなの
+                //ここでセルの間をあける　8つの高さ150セルが表示されるため
+                item.contentInsets = .init(top: 0, leading: 5, bottom: 5, trailing: 5)
+                
+                //2 グループを作成　グループのサイズを決める
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
+                                                                widthDimension: .fractionalWidth(1), //Viewの幅100%
+                                                                heightDimension: .estimated(500)), //推定値500の高さ？
+                                                               subitems: [item])
+                group.contentInsets.trailing = 0
+                //　1セクションを決める
                 let section = NSCollectionLayoutSection(group: group)
-                item.contentInsets.leading = 3
-                section.supplementariesFollowContentInsets = false
-                //section.orthogonalScrollingBehavior = .paging
+                //section.contentInsets.trailing = 0
+                //section.orthogonalScrollingBehavior = .continuous
+                section.boundarySupplementaryItems = [
+                    .init(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(40)),
+                          elementKind: CollectionViewLayout.headerId,
+                          alignment: .topLeading)
+                ]
                 return section
     
             }
