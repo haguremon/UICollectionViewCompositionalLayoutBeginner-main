@@ -23,8 +23,12 @@ class Header: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(label)//addSubview
-        label.frame.size = self.frame.size
         //label.text = "カテゴリー"
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        label.frame.size = self.frame.size
     }
     
     required init?(coder: NSCoder) {

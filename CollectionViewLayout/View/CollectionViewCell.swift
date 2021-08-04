@@ -21,8 +21,12 @@ class CollectionViewCell: UICollectionViewCell {
         override init(frame: CGRect) { //初期化した時に呼ばれる所
          super.init(frame: frame)
          addSubview(label)//addSubview
-         label.frame.size = self.frame.size
+         
      }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        label.frame.size = self.frame.size
+    }
      
     required init?(coder: NSCoder) {
          fatalError("init(coder:) has not been implemented")
